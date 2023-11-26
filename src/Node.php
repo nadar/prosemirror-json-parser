@@ -16,9 +16,15 @@ class Node
         return $this->node['type'];
     }
 
-    public function getText() : string
+    public function getText($sanitize = true) : string
     {
-        return $this->node['text'] ?? '';
+        $text =  $this->node['text'] ?? '';
+
+        if (!$sanitize) {
+            return $text;
+        }
+
+        return htmlspecialchars($text, ENT_QUOTES|ENT_HTML5, 'UTF-8', false);
     }
 
     /**
