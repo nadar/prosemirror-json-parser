@@ -1,0 +1,227 @@
+{
+    "type": "doc",
+    "content": [
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Das ist ein Test.",
+            "content": []
+          }
+        ]
+      },
+      {
+        "type": "accordion",
+        "attrs": {
+          "title": "Markenstrategie",
+          "text": "Das ist unsere Strategie!"
+        },
+        "content": []
+      },
+      {
+        "type": "paragraph",
+        "content": []
+      },
+      {
+        "type": "accordion",
+        "attrs": {
+          "title": "Das ist unser Ziel?",
+          "text": "Accordion Text"
+        },
+        "content": []
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Before hard break",
+            "content": []
+          },
+          {
+            "type": "hardBreak",
+            "content": []
+          },
+          {
+            "type": "text",
+            "text": "After hard break",
+            "content": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elit.",
+            "content": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": []
+      },
+      {
+        "type": "paragraph",
+        "content": []
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Some empty p's above",
+            "content": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Test",
+            "content": []
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "some quotes",
+                "content": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "image",
+        "attrs": {
+          "src": "https://storage.flyo.cloud/zusammenstellungv03_32528f65.gif/thumb/1400xnull",
+          "alt": null,
+          "title": null
+        },
+        "content": []
+      },
+      {
+        "type": "paragraph",
+        "content": []
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Wohing geht ",
+            "content": []
+          },
+          {
+            "type": "text",
+            "marks": [
+              {
+                "type": "link",
+                "attrs": {
+                  "href": "mailto:foobar@example.com",
+                  "target": "",
+                  "rel": "noopener noreferrer nofollow",
+                  "class": null
+                }
+              }
+            ],
+            "text": "das",
+            "content": []
+          },
+          {
+            "type": "text",
+            "text": "?",
+            "content": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Und ",
+            "content": []
+          },
+          {
+            "type": "text",
+            "marks": [
+              {
+                "type": "link",
+                "attrs": {
+                  "href": "https://luya.io",
+                  "target": "",
+                  "rel": "noopener noreferrer nofollow",
+                  "class": null
+                }
+              }
+            ],
+            "text": "extern",
+            "content": []
+          },
+          {
+            "type": "text",
+            "text": "?",
+            "content": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Und ",
+            "content": []
+          },
+          {
+            "type": "text",
+            "marks": [
+              {
+                "type": "link",
+                "attrs": {
+                  "href": "https://luya.io",
+                  "target": "_blank",
+                  "rel": "noopener noreferrer nofollow",
+                  "class": null
+                }
+              }
+            ],
+            "text": "Targets",
+            "content": []
+          },
+          {
+            "type": "text",
+            "text": "?",
+            "content": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": []
+      },
+      {
+        "type": "youtube",
+        "attrs": {
+          "src": "https://www.youtube.com/watch?v=Ceo8E40vdiI",
+          "start": 0,
+          "width": 640,
+          "height": 480
+        },
+        "content": []
+      }
+    ]
+  }

@@ -1,0 +1,25 @@
+{
+    "name": "flyo/nitro-php-bridge",
+    "description": "This is can be used in backend projects to make the bridge between Flyo Cloud and your application.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Nadar\\ProseMirror\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Nadar\\ProseMirror\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nadar",
+            "email": "git@nadar.io"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^10"
+    }
+}
