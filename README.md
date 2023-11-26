@@ -1,33 +1,35 @@
-# prosemirror-json-parser
+# Prosemirror JSON Parser
 
-A library to parse prosemirror / TipTap Json into HTML with custom elements and highly extendible
+The **prosemirror-json-parser** is a versatile library designed to parse ProseMirror/TipTap JSON content into HTML, featuring custom elements and high extendibility.
 
-**This works perfect for both TipTap and ProseMirror (as TipTap is based on ProseMirror)**
+It functions seamlessly with both TipTap and ProseMirror, given that TipTap is built upon ProseMirror.
 
-+ Dependencie free, no other libraries are required for this library
-+ Super fast
-+ Highly extendible, you can add your own custom nodes.
+**Key Features:**
+
++ Dependency-free: No additional libraries required for this parser.
++ Exceptional speed: Offers high-performance parsing capabilities.
++ Highly extendible: Enables the addition of custom nodes as per your requirements.
 
 ## Installation & Usage
 
-```
-composer require ..
+```bash
+composer require ...
 ```
 
 ```php
-$parser = new Parser();
+$parser = new Nadar\ProseMirror\Parser();
 $html = $parser->toHtml($json);
 ```
 
-## Extend & Customize
+## Extending & Customizing
 
-Each node is represented by a callable function inside the parser, where the key is the name of the node. So you can easy add your own nodes or overwrite existing nodes.
+Each node corresponds to a callable function within the parser, with the node's name serving as the key. This setup facilitates the easy addition or modification of nodes.
 
-For example you like to adjust how the image node is rendered, you can do this by adding your own function to the parser:
+For instance, suppose you want to adjust the rendering of the image node. In that case, you can achieve this by incorporating your own function into the parser:
 
 ```php
-$parser = new Parser([
-    'image' => fn(Node $node) => '<img src="' . $node->getAttr('src') . '" alt="' . $node->getAttr('alt') . '" class="this-is-my-class" />',
+$parser = new \Nadar\ProseMirrorParser([
+    'image' => fn(\Nadar\ProseMirror\Node $node) => '<img src="' . $node->getAttr('src') . '" alt="' . $node->getAttr('alt') . '" class="this-is-my-class" />',
 ]);
 $html = $parser->toHtml($json);
 ```

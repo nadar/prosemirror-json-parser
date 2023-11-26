@@ -10,38 +10,8 @@ class Parser
    /*
     protected array $defaultNodeRenderers = [
          
-
-        'listItem' => function($content, $renderNode) {
-          return implode('', array_map($renderNode, $content));
-        },
-        'blockquote' => function($content, $renderNode) {
-          return '<blockquote>' . implode('', array_map($renderNode, $content)) . '</blockquote>';
-        },
-        'image' => function($attrs) {
-          return '<img src="' . $attrs['src'] . '" alt="' . $attrs['alt'] . '" title="' . $attrs['title'] . '" />';
-        },
         'youtube' => function($attrs) {
           return '<iframe width="560" height="315" src="' . $attrs['src'] . '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
-        },
-        'text' => function($text, $marks) {
-          $renderedText = $text;
-          if ($marks) {
-            foreach ($marks as $mark) {
-              if ($mark['type'] === "bold") {
-                $renderedText = '<strong>' . $renderedText . '</strong>';
-              } else if ($mark['type'] === "italic") {
-                $renderedText = '<em>' . $renderedText . '</em>';
-              } else if ($mark['type'] === "underline") {
-                $renderedText = '<u>' . $renderedText . '</u>';
-              } else if ($mark['type'] === "strikethrough") {
-                $renderedText = '<del>' . $renderedText . '</del>';
-              } else if ($mark['type'] === "link") {
-                $renderedText = '<a href="' . $mark['attrs']['href'] . '" target="' . $mark['attrs']['target'] . '">' . $renderedText . '</a>';
-              }
-              // Add more conditions for other mark types (underline, strikethrough, etc.) if needed
-            }
-          }
-          return $renderedText;
         },
         
     ];
@@ -58,10 +28,14 @@ class Parser
             
             'paragraph' => fn(Node $node) => '<p>' . $node->renderContent() . '</p>',
 
+            'blockquote' => fn(Node $node) => '<blockquote>' . $node->renderContent() . '</blockquote>',
+
             'image' => fn(Node $node) => '<img src="' . $node->getAttr('src') . '" alt="' . $node->getAttr('alt') . '" title="' . $node->getAttr('title') . '" />',
             
             'heading' => fn(Node $node) => '<h' . $node->getAttr('level') . '>' . $node->renderContent() . '</h' . $node->getAttr('level') . '>',
             
+            'youtube' => fn(Node $node) => '<iframe width="560" height="315" src="' . $node->getAttr('src') . '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
+
             'bulletList' => function(Node $node) {
               return '<ul>' . implode('', array_map(function($child) use ($node) {
                 return '<li>' . $node->renderChildNode($child) . '</li>';
