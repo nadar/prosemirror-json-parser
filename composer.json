@@ -1,6 +1,6 @@
 {
-    "name": "flyo/nitro-php-bridge",
-    "description": "This is can be used in backend projects to make the bridge between Flyo Cloud and your application.",
+    "name": "nadar/prosemirror-json-parser",
+    "description": "A library to parse prosemirror / TipTap Json into HTML with custom elements and highly extendible",
     "type": "library",
     "license": "MIT",
     "autoload": {
