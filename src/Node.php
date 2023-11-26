@@ -24,7 +24,7 @@ class Node
             return $text;
         }
 
-        return htmlspecialchars($text, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
+        return htmlspecialchars((string) $text, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
     }
 
     /**
@@ -32,7 +32,7 @@ class Node
      */
     public function getMarks(): ArrayIterator
     {
-        return new ArrayIterator(array_map(fn ($item) => new Mark($item), $this->node['marks'] ?? []));
+        return new ArrayIterator(array_map(static fn($item) => new Mark($item), $this->node['marks'] ?? []));
     }
 
     public function getContent(): array
@@ -52,9 +52,7 @@ class Node
 
     public function renderContent(): string
     {
-        return implode('', array_map(function ($child) {
-            return $this->renderChildNode($child);
-        }, $this->getContent()));
+        return implode('', array_map(fn($child) => $this->renderChildNode($child), $this->getContent()));
     }
 
     public function render(): string

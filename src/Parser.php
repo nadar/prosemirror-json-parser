@@ -14,35 +14,27 @@ class Parser
     public function getDefaultNodeRenderers(): array
     {
         return [
-            Types::doc->name => fn (Node $node) => $node->renderContent(),
+            Types::doc->name => static fn(Node $node) => $node->renderContent(),
 
-            Types::default->name => fn (Node $node) => '<div>'.$node->getType() . ' does not exists. ' . $node->renderContent().'</div>',
+            Types::default->name => static fn(Node $node) => '<div>'.$node->getType() . ' does not exists. ' . $node->renderContent().'</div>',
 
-            Types::paragraph->name => fn (Node $node) => '<p>' . $node->renderContent() . '</p>',
+            Types::paragraph->name => static fn(Node $node) => '<p>' . $node->renderContent() . '</p>',
 
-            Types::blockquote->name => fn (Node $node) => '<blockquote>' . $node->renderContent() . '</blockquote>',
+            Types::blockquote->name => static fn(Node $node) => '<blockquote>' . $node->renderContent() . '</blockquote>',
 
-            Types::image->name => fn (Node $node) => '<img src="' . $node->getAttr('src') . '" alt="' . $node->getAttr('alt') . '" title="' . $node->getAttr('title') . '" />',
+            Types::image->name => static fn(Node $node) => '<img src="' . $node->getAttr('src') . '" alt="' . $node->getAttr('alt') . '" title="' . $node->getAttr('title') . '" />',
 
-            Types::heading->name => fn (Node $node) => '<h' . $node->getAttr('level') . '>' . $node->renderContent() . '</h' . $node->getAttr('level') . '>',
+            Types::heading->name => static fn(Node $node) => '<h' . $node->getAttr('level') . '>' . $node->renderContent() . '</h' . $node->getAttr('level') . '>',
 
-            Types::youtube->name => fn (Node $node) => '<iframe width="560" height="315" src="' . $node->getAttr('src') . '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
+            Types::youtube->name => static fn(Node $node) => '<iframe width="560" height="315" src="' . $node->getAttr('src') . '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
 
-            Types::bulletList->name => function (Node $node) {
-                return '<ul>' . implode('', array_map(function ($child) use ($node) {
-                    return '<li>' . $node->renderChildNode($child) . '</li>';
-                }, $node->getContent())) . '</ul>';
-            },
+            Types::bulletList->name => static fn(Node $node) => '<ul>' . implode('', array_map(static fn($child) => '<li>' . $node->renderChildNode($child) . '</li>', $node->getContent())) . '</ul>',
 
-            Types::orderedList->name => function (Node $node) {
-                return '<ol>' . implode('', array_map(function ($child) use ($node) {
-                    return '<li>' . $node->renderChildNode($child) . '</li>';
-                }, $node->getContent())) . '</ol>';
-            },
+            Types::orderedList->name => static fn(Node $node) => '<ol>' . implode('', array_map(static fn($child) => '<li>' . $node->renderChildNode($child) . '</li>', $node->getContent())) . '</ol>',
 
-            Types::listItem->name => fn (Node $node) => $node->renderContent(),
+            Types::listItem->name => static fn(Node $node) => $node->renderContent(),
 
-            Types::text->name => function (Node $node) {
+            Types::text->name => static function (Node $node) {
                 $text = $node->getText();
                 foreach ($node->getMarks() as $mark) {
                     if ($mark->getType() === 'bold') {
@@ -57,7 +49,6 @@ class Parser
                         $text = '<a href="' . $mark->getAttr('href') . '" target="' . $mark->getAttr('target') . '">' . $text . '</a>';
                     }
                 }
-
                 return $text;
             },
         ];
