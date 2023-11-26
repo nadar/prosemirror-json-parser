@@ -6,20 +6,20 @@ class Mark
 {
     public function __construct(protected array $mark)
     {
-        
+
     }
 
-    public function getText() : string
+    public function getText(): string
     {
         return $this->mark['text'] ?? '';
     }
 
-    public function getType() : string
+    public function getType(): string
     {
         return $this->mark['type'];
     }
 
-    public function getAttrs() : array
+    public function getAttrs(): array
     {
         return $this->mark['attrs'] ?? [];
     }

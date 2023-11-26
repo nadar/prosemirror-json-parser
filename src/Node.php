@@ -8,15 +8,15 @@ class Node
 {
     public function __construct(protected Parser $parser, protected array $node)
     {
-        
+
     }
 
-    public function getType() : string
+    public function getType(): string
     {
         return $this->node['type'];
     }
 
-    public function getText($sanitize = true) : string
+    public function getText($sanitize = true): string
     {
         $text =  $this->node['text'] ?? '';
 
@@ -24,23 +24,23 @@ class Node
             return $text;
         }
 
-        return htmlspecialchars($text, ENT_QUOTES|ENT_HTML5, 'UTF-8', false);
+        return htmlspecialchars($text, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
     }
 
     /**
      * @return Mark[]
      */
-    public function getMarks() : ArrayIterator
+    public function getMarks(): ArrayIterator
     {
-        return new ArrayIterator(array_map(fn($item) => new Mark($item), $this->node['marks'] ?? []));
+        return new ArrayIterator(array_map(fn ($item) => new Mark($item), $this->node['marks'] ?? []));
     }
 
-    public function getContent() : array
+    public function getContent(): array
     {
         return $this->node['content'] ?? [];
     }
 
-    public function getAttrs() : array
+    public function getAttrs(): array
     {
         return $this->node['attrs'] ?? [];
     }
@@ -50,9 +50,9 @@ class Node
         return $this->getAttrs()[$name] ?? $defaultValue;
     }
 
-    public function renderContent() : string
+    public function renderContent(): string
     {
-        return implode('', array_map(function($child) {
+        return implode('', array_map(function ($child) {
             return $this->renderChildNode($child);
         }, $this->getContent()));
     }
@@ -63,7 +63,7 @@ class Node
         return call_user_func_array($renderer, [$this]);
     }
 
-    public function renderChildNode(array $json) : string
+    public function renderChildNode(array $json): string
     {
         return $this->parser->renderNode($json);
     }

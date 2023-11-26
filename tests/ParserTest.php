@@ -2,7 +2,9 @@
 
 namespace Nadar\ProseMirror\Tests;
 
+use Nadar\ProseMirror\Node;
 use Nadar\ProseMirror\Parser;
+use Nadar\ProseMirror\Types;
 use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
@@ -42,5 +44,36 @@ class ParserTest extends TestCase
         $result = $wysiwyg->toHtml(json_decode($json, true));
 
         $this->assertSame('<p>&lt;script&gt;alert(&apos;xss&apos;);&lt;/script&gt;</p>', $result);
+    }
+
+    public function testCustomNodeRenderer()
+    {
+        $json = <<<EOT
+        {
+            "type": "doc",
+            "content": [
+                {
+                    "type": "barfoo",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Hello World"
+                        }
+                    ]
+                }
+            ]
+        }
+        EOT;
+
+        $wysiwyg = new Parser();
+        $wysiwyg->replaceNode(Types::paragraph, function(Node $node) {
+            return '<p>Custom Paragraph</p>';
+        });
+
+        $wysiwyg->addNode('barfoo', fn(Node $node) => '<div>BarFoo: '.$node->renderContent().'</div>');
+
+        $result = $wysiwyg->toHtml(json_decode($json, true));
+
+        $this->assertSame('<div>BarFoo: Hello World</div>', $result);
     }
 }
