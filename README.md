@@ -1,6 +1,6 @@
 # ProseMirror JSON Parser
 
-The ProseMirror JSON Parser (**prosemirror-json-parser**) is a versatile PHP library crafted for effortless conversion of ProseMirror/TipTap JSON content into HTML. With dependency-free operation and exceptional parsing speed, this library ensures high-performance HTML generation. Seamlessly integrating with TipTap and ProseMirror, it offers customization through easy addition or modification of nodes. Effortlessly install via Composer, utilize the `toHtml` function and explore extensive customization options for tailored JSON to HTML conversion.
+The ProseMirror JSON Parser (**prosemirror-json-parser**) is a versatile PHP library crafted for effortless conversion of [ProseMirror/TipTap JSON Model](https://prosemirror.net/docs/ref/#model) content into HTML. With dependency-free operation and exceptional parsing speed, this library ensures high-performance HTML generation. Seamlessly integrating with TipTap and ProseMirror, it offers customization through easy addition or modification of nodes. Effortlessly install via Composer, utilize the `toHtml` function and explore extensive customization options for tailored JSON to HTML conversion.
 
 **It functions seamlessly with both TipTap and ProseMirror because TipTap is built upon ProseMirror.**
 
