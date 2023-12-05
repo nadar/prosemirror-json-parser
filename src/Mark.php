@@ -9,11 +9,6 @@ class Mark
 
     }
 
-    public function getText(): string
-    {
-        return $this->mark['text'] ?? '';
-    }
-
     public function getType(): string
     {
         return $this->mark['type'];

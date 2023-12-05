@@ -21,6 +21,18 @@ class ParserTest extends TestCase
         $this->assertSame($html, $result);
     }
 
+    public function testMarks()
+    {
+        $path = __DIR__ . '/marks.json';
+        $buff = file_get_contents($path);
+        $json = json_decode($buff, true);
+
+        $wysiwyg = new Parser();
+        $result = $wysiwyg->toHtml($json);
+        $html = '<p>This is a sample text with <strong>bold</strong>, <em>italic</em>, <u>underline</u>, and <s>strikethrough</s> formatting.</p>';
+        $this->assertSame($html, $result);
+    }
+
     public function testXss()
     {
         $json = <<<EOT
@@ -44,6 +56,18 @@ class ParserTest extends TestCase
         $result = $wysiwyg->toHtml(json_decode($json, true));
 
         $this->assertSame('<p>&lt;script&gt;alert(&apos;xss&apos;);&lt;/script&gt;</p>', $result);
+
+        // test without xss filter:
+        
+        $xss = <<<EOT
+                {
+                    "type": "text",
+                    "text": "<script>alert('xss');</script>"
+                }
+        EOT;
+        $node = new Node($wysiwyg, json_decode($xss, true));
+        $xssResult = $node->getText(false);
+        $this->assertSame("<script>alert('xss');</script>", $xssResult);
     }
 
     public function testCustomNodeRenderer()

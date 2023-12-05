@@ -37,14 +37,15 @@ class Parser
             Types::text->name => static function (Node $node) {
                 $text = $node->getText();
                 foreach ($node->getMarks() as $mark) {
+                    /** @var Mark $mark */
                     if ($mark->getType() === 'bold') {
                         $text = '<strong>' . $text . '</strong>';
                     } elseif ($mark->getType() === "italic") {
                         $text = '<em>' . $text . '</em>';
                     } elseif ($mark->getType() === "underline") {
                         $text = '<u>' . $text . '</u>';
-                    } elseif ($mark->getType() === "strikethrough") {
-                        $text = '<del>' . $text . '</del>';
+                    } elseif ($mark->getType() === "strike") {
+                        $text = '<s>' . $text . '</s>';
                     } elseif ($mark->getType() === "link") {
                         $text = '<a href="' . $mark->getAttr('href') . '" target="' . $mark->getAttr('target') . '">' . $text . '</a>';
                     }
