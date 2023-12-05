@@ -21,4 +21,9 @@ enum Types
     case orderedList; // Represents an ordered list type.
     case listItem; // Represents a list item type.
     case text; // Represents a text type.
+    case codeBlock;
+    case horizontalRule;
+    case tableRow;
+    case tableCell;
+    case table;
 }

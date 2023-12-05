@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Nadar\ProseMirror\Tests;
 
@@ -58,7 +60,7 @@ class ParserTest extends TestCase
         $this->assertSame('<p>&lt;script&gt;alert(&apos;xss&apos;);&lt;/script&gt;</p>', $result);
 
         // test without xss filter:
-        
+
         $xss = <<<EOT
                 {
                     "type": "text",
@@ -90,11 +92,11 @@ class ParserTest extends TestCase
         EOT;
 
         $wysiwyg = new Parser();
-        $wysiwyg->replaceNode(Types::paragraph, function(Node $node) {
+        $wysiwyg->replaceNode(Types::paragraph, function (Node $node) {
             return '<p>Custom Paragraph</p>';
         });
 
-        $wysiwyg->addNode('barfoo', fn(Node $node) => '<div>BarFoo: '.$node->renderContent().'</div>');
+        $wysiwyg->addNode('barfoo', fn (Node $node) => '<div>BarFoo: '.$node->renderContent().'</div>');
 
         $result = $wysiwyg->toHtml(json_decode($json, true));
 

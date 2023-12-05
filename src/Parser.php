@@ -45,6 +45,16 @@ class Parser
 
             Types::listItem->name => static fn (Node $node) => $node->renderContent(),
 
+            Types::codeBlock->name => static fn (Node $node) => '<pre><code>' . $node->renderContent() . '</code></pre>',
+
+            Types::horizontalRule->name => static fn () => '<hr />',
+
+            Types::table->name => static fn (Node $node) => "<table>{$node->renderContent()}</table>",
+
+            Types::tableRow->name => static fn (Node $node) => "<tr>{$node->renderContent()}</tr>",
+
+            Types::tableCell->name => static fn (Node $node) => "<td>{$node->renderContent()}</td>",
+
             Types::text->name => static function (Node $node) {
                 $text = $node->getText();
                 foreach ($node->getMarks() as $mark) {
