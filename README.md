@@ -12,7 +12,7 @@ It functions seamlessly with both TipTap and ProseMirror, given that TipTap is b
 [![License](https://poser.pugx.org/nadar/prosemirror-json-parser/license)](https://packagist.org/packages/nadar/prosemirror-json-parser)
 
 
-![ProseMirror JSON Parser](ai-prosemirror-to-html.webp)
+![ProseMirror JSON Parser, what AI thinks about](ai-prosemirror-to-html.webp)
 
 **Key Features:**
 
@@ -22,13 +22,13 @@ It functions seamlessly with both TipTap and ProseMirror, given that TipTap is b
 
 ## Installation & Usage
 
-The library can be installed via Composer:
+To install the library using Composer, execute the following command:
 
 ```bash
 composer require nadar/prosemirror-json-parser
 ```
 
-Then add parser to your project and convert the input json code (which must be available as array, so you can use `json_decode($json, true)` to convert the json string into an array) into html:
+After installing the library, integrate the parser into your project. Utilize the `toHtml` function to convert your JSON value into renderable HTML code. Note that the `toHtml` function solely accepts an array. Therefore, if your content is in JSON format, employ `json_decode($json, true)` to initially convert the JSON string into an array and pass it `toHtml(json_decode($json, true))`.
 
 ```php
 $html = (new Nadar\ProseMirror\Parser())
@@ -37,19 +37,19 @@ $html = (new Nadar\ProseMirror\Parser())
 
 ## Extending & Customizing
 
-Each node corresponds to a callable function within the parser, with the node's name serving as the key. This setup facilitates the easy addition or modification of nodes.
+Each node corresponds to a callable function within the parser, using the node's name as the key. This setup allows for easy addition or modification of nodes.
 
-For instance, suppose you want to adjust the rendering of the image node. In that case, you can achieve this by incorporating your own function into the parser using the `replaceNode()` method:
+For example, to adjust the rendering of the image node, you can include your own function into the parser using the `replaceNode()` method:
 
 ```php
-$html = (new \Nadar\ProseMirror\Parser());
+$html = (new \Nadar\ProseMirror\Parser())
     ->replaceNode(\Nadar\ProseMirror\Types::image, fn(\Nadar\ProseMirror\Node $node) => '<img src="' . $node->getAttr('src') . '" class="this-is-my-class" />')
     ->toHtml($json);
 ```
 
-> Check the Types class for all available node types.
+> To see all default nodes declared, refer to the `Types` class.
 
-Or if you have a custom node with a custom name you can add it to the parser using `addNode` method:
+If you have a custom node with a specific name, you can add it to the parser using the `addNode()` method:
 
 ```php
 $html = (new \Nadar\ProseMirror\Parser())
@@ -57,4 +57,4 @@ $html = (new \Nadar\ProseMirror\Parser())
     ->toHtml($json);
 ```
 
-> The `addNode()` and `replaceNode()` methods are internal almost the same, except of that replaceNode should only be used for existing defualt nodes, which are listed in the Types enum class.
+> The `addNode()` and `replaceNode()` methods are almost identical internally, except that `replaceNode` should only be used when altering the output of default nodes. You can view all by-default declared nodes in the `Types` class.
