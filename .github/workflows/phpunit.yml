@@ -2,6 +2,9 @@ name: PHPUnit Tests
 
 on: [push, pull_request]
 
+env:
+  CC_TEST_REPORTER_ID: 1d1f74ba47a7d5ca9fd110c771ddac54d67608513924b89df2b7ed8761541244
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -26,4 +29,12 @@ jobs:
       run: composer clearcache && composer install --prefer-dist
 
     - name: Run tests
-      run: ./vendor/bin/phpunit tests
+      run: ./vendor/bin/phpunit tests --verbose --coverage-clover=clover.xml
+
+    - name: Code coverage
+      run: |
+        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        chmod +x ./cc-test-reporter
+        ./cc-test-reporter after-build -t clover
+      if: matrix.php == '8.1'
+      continue-on-error: true # if is fork
