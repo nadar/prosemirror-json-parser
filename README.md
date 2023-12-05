@@ -1,4 +1,4 @@
-# Prosemirror JSON Parser
+# ProseMirror JSON Parser
 
 The **prosemirror-json-parser** is a versatile library designed to parse ProseMirror/TipTap JSON content into HTML, featuring custom elements and high extendibility.
 
