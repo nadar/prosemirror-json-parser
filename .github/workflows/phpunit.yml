@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php: ['8.1', '8.2', '8.3']
 
     steps:
     - name: Checkout code
@@ -19,7 +19,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php-versions }}
+        php-version: ${{ matrix.php }}
         extensions: mbstring
         tools: composer
       env:
@@ -37,4 +37,3 @@ jobs:
         chmod +x ./cc-test-reporter
         ./cc-test-reporter after-build -t clover
       if: matrix.php == '8.1'
-      continue-on-error: true # if is fork
