@@ -1,6 +1,6 @@
 {
     "name": "nadar/prosemirror-json-parser",
-    "description": "A library to parse prosemirror / TipTap Json into HTML with custom elements and highly extendible",
+    "description": "A library that easily converts ProseMirror/TipTap JSON into customizable HTML elements.",
     "type": "library",
     "license": "MIT",
     "autoload": {
