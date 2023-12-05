@@ -1,8 +1,8 @@
 # ProseMirror JSON Parser
 
-The **prosemirror-json-parser** is a versatile library designed to parse ProseMirror/TipTap JSON content into HTML, featuring custom elements and high extendibility.
+The ProseMirror JSON Parser (**prosemirror-json-parser**) is a versatile PHP library crafted for effortless conversion of ProseMirror/TipTap JSON content into HTML. With dependency-free operation and exceptional parsing speed, this library ensures high-performance HTML generation. Seamlessly integrating with TipTap and ProseMirror, it offers customization through easy addition or modification of nodes. Effortlessly install via Composer, utilize the `toHtml` function and explore extensive customization options for tailored JSON to HTML conversion.
 
-It functions seamlessly with both TipTap and ProseMirror, given that TipTap is built upon ProseMirror.
+**It functions seamlessly with both TipTap and ProseMirror because TipTap is built upon ProseMirror.**
 
 [![PHPUnit Tests](https://github.com/nadar/prosemirror-json-parser/actions/workflows/phpunit.yml/badge.svg)](https://github.com/nadar/prosemirror-json-parser/actions/workflows/phpunit.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/79f6861128acda33438f/maintainability)](https://codeclimate.com/github/nadar/prosemirror-json-parser/maintainability)
@@ -19,6 +19,8 @@ It functions seamlessly with both TipTap and ProseMirror, given that TipTap is b
 + Dependency-free: No additional libraries required for this parser.
 + Exceptional speed: Offers high-performance parsing capabilities.
 + Highly extendible: Enables the addition of custom nodes as per your requirements.
++ 100% Code Coverage and Testing: Ensures comprehensive test coverage, guaranteeing reliability and stability.
++ Robust out-of-the-box HTML generation: Generates high-quality HTML seamlessly without requiring modifications, ensuring ease of use and reliability.
 
 ## Installation & Usage
 
