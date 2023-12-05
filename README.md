@@ -12,7 +12,7 @@ It functions seamlessly with both TipTap and ProseMirror, given that TipTap is b
 [![License](https://poser.pugx.org/nadar/prosemirror-json-parser/license)](https://packagist.org/packages/nadar/prosemirror-json-parser)
 
 
-![ProseMirror JSON Parser](prosemirror-json-parser.png)
+![ProseMirror JSON Parser](ai-prosemirror-to-html.jpeg)
 
 **Key Features:**
 
