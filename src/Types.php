@@ -26,4 +26,5 @@ enum Types
     case tableRow;
     case tableCell;
     case table;
+    case hardBreak;
 }

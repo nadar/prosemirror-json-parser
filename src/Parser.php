@@ -49,6 +49,8 @@ class Parser
 
             Types::horizontalRule->name => static fn () => '<hr />',
 
+            Types::hardBreak->name => static fn () => '<br />',
+
             Types::table->name => static fn (Node $node) => "<table>{$node->renderContent()}</table>",
 
             Types::tableRow->name => static fn (Node $node) => "<tr>{$node->renderContent()}</tr>",
