@@ -26,7 +26,7 @@ class Node
      */
     public function getType(): string
     {
-        return $this->node['type'];
+        return $this->node['type'] ?? '';
     }
 
     /**

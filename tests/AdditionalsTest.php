@@ -22,4 +22,51 @@ class AdditionalsTest extends TestCase
 }</code></pre><hr /><table><tr><td>Cell 1</td><td>Cell 2</td></tr><tr><td>Cell 3</td><td>Cell 4</td></tr></table>';
         $this->assertSame($html, $result);
     }
+
+    public function testWithEmptyNullType()
+    {
+        $json = <<<EOT
+        {
+            "type": "doc",
+            "content": [
+                {
+                    "type": null,
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Hello World"
+                        }
+                    ]
+                }
+            ]
+        }
+        EOT;
+
+        $wysiwyg = new Parser();
+        $result = $wysiwyg->toHtml(json_decode($json, true));
+
+        $this->assertSame('<div> does not exists. Hello World</div>', $result);
+
+        $json = <<<EOT
+        {
+            "type": "doc",
+            "content": [
+                {
+                    "type": "",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Hello World"
+                        }
+                    ]
+                }
+            ]
+        }
+        EOT;
+
+        $wysiwyg = new Parser();
+        $result = $wysiwyg->toHtml(json_decode($json, true));
+
+        $this->assertSame('<div> does not exists. Hello World</div>', $result);
+    }
 }
