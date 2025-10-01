@@ -12,9 +12,13 @@ class Parser
     /** @var array An array containing node renderers. */
     public array $nodeRenderers = [];
 
+    /** @var array An array containing mark renderers. */
+    public array $markRenderers = [];
+
     public function __construct()
     {
         $this->nodeRenderers = $this->getDefaultNodeRenderers();
+        $this->markRenderers = $this->getDefaultMarkRenderers();
     }
 
     /**
@@ -57,24 +61,31 @@ class Parser
 
             Types::tableCell->name => static fn (Node $node) => "<td>{$node->renderContent()}</td>",
 
-            Types::text->name => static function (Node $node) {
+            Types::text->name => function (Node $node) {
                 $text = $node->getText();
                 foreach ($node->getMarks() as $mark) {
                     /** @var Mark $mark */
-                    if ($mark->getType() === 'bold') {
-                        $text = '<strong>' . $text . '</strong>';
-                    } elseif ($mark->getType() === "italic") {
-                        $text = '<em>' . $text . '</em>';
-                    } elseif ($mark->getType() === "underline") {
-                        $text = '<u>' . $text . '</u>';
-                    } elseif ($mark->getType() === "strike") {
-                        $text = '<s>' . $text . '</s>';
-                    } elseif ($mark->getType() === "link") {
-                        $text = '<a href="' . $mark->getAttr('href') . '" target="' . $mark->getAttr('target') . '">' . $text . '</a>';
-                    }
+                    $markRenderer = $this->findMarkRenderer($mark->getType());
+                    $text = $markRenderer($mark, $text);
                 }
                 return $text;
             },
+        ];
+    }
+
+    /**
+    * Retrieves default mark renderers.
+    *
+    * @return array An array of default mark renderers.
+    */
+    public function getDefaultMarkRenderers(): array
+    {
+        return [
+            'bold' => static fn (Mark $mark, string $text) => '<strong>' . $text . '</strong>',
+            'italic' => static fn (Mark $mark, string $text) => '<em>' . $text . '</em>',
+            'underline' => static fn (Mark $mark, string $text) => '<u>' . $text . '</u>',
+            'strike' => static fn (Mark $mark, string $text) => '<s>' . $text . '</s>',
+            'link' => static fn (Mark $mark, string $text) => '<a href="' . $mark->getAttr('href') . '" target="' . $mark->getAttr('target') . '">' . $text . '</a>',
         ];
     }
 
@@ -101,6 +112,32 @@ class Parser
     public function addNode(string $type, callable $renderer): self
     {
         $this->nodeRenderers[$type] = $renderer;
+        return $this;
+    }
+
+    /**
+    * Replaces a mark renderer with a custom renderer.
+    *
+    * @param string $type The type of mark to replace the renderer for.
+    * @param callable $renderer The custom renderer function.
+    * @return $this
+    */
+    public function replaceMark(string $type, callable $renderer): self
+    {
+        $this->markRenderers[$type] = $renderer;
+        return $this;
+    }
+
+    /**
+    * Adds a new mark renderer.
+    *
+    * @param string $type The type of mark to add the renderer for.
+    * @param callable $renderer The renderer function to add.
+    * @return $this
+    */
+    public function addMark(string $type, callable $renderer): self
+    {
+        $this->markRenderers[$type] = $renderer;
         return $this;
     }
 
@@ -137,5 +174,16 @@ class Parser
     public function findNodeRenderer(string $type): callable
     {
         return $this->nodeRenderers[$type] ?? $this->nodeRenderers['default'];
+    }
+
+    /**
+     * Finds a mark renderer based on the type.
+     *
+     * @param string $type The type of mark to find the renderer for.
+     * @return callable The found mark renderer, or a pass-through if not found.
+     */
+    public function findMarkRenderer(string $type): callable
+    {
+        return $this->markRenderers[$type] ?? static fn (Mark $mark, string $text) => $text;
     }
 }
