@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nadar\ProseMirror\Tests;
 
 use Nadar\ProseMirror\Mark;
+use Nadar\ProseMirror\MarkType;
 use Nadar\ProseMirror\Parser;
 use PHPUnit\Framework\TestCase;
 
@@ -255,7 +256,7 @@ class MarkRendererTest extends TestCase
         ];
 
         $parser = new Parser();
-        $parser->replaceMark(\Nadar\ProseMirror\MarkType::bold, fn(Mark $mark, string $text) => '<b class="custom">' . $text . '</b>');
+        $parser->replaceMark(MarkType::bold, fn(Mark $mark, string $text) => '<b class="custom">' . $text . '</b>');
         
         $result = $parser->toHtml($json);
         
@@ -289,7 +290,7 @@ class MarkRendererTest extends TestCase
         ];
 
         $parser = new Parser();
-        $parser->replaceMark(\Nadar\ProseMirror\MarkType::link, function (Mark $mark, string $text) {
+        $parser->replaceMark(MarkType::link, function (Mark $mark, string $text) {
             return '<a href="' . $mark->getAttr('href') . '" class="enum-link">' . $text . '</a>';
         });
         
