@@ -235,4 +235,66 @@ class MarkRendererTest extends TestCase
         
         $this->assertSame('<p><span style="color: red; font-size: large;">Custom mark</span></p>', $result);
     }
+
+    public function testReplaceMarkWithEnum()
+    {
+        $json = [
+            'type' => 'doc',
+            'content' => [
+                [
+                    'type' => 'paragraph',
+                    'content' => [
+                        [
+                            'type' => 'text',
+                            'text' => 'Bold text',
+                            'marks' => [['type' => 'bold']]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $parser = new Parser();
+        $parser->replaceMark(\Nadar\ProseMirror\MarkType::bold, fn(Mark $mark, string $text) => '<b class="custom">' . $text . '</b>');
+        
+        $result = $parser->toHtml($json);
+        
+        $this->assertSame('<p><b class="custom">Bold text</b></p>', $result);
+    }
+
+    public function testReplaceMarkLinkWithEnum()
+    {
+        $json = [
+            'type' => 'doc',
+            'content' => [
+                [
+                    'type' => 'paragraph',
+                    'content' => [
+                        [
+                            'type' => 'text',
+                            'text' => 'Link',
+                            'marks' => [
+                                [
+                                    'type' => 'link',
+                                    'attrs' => [
+                                        'href' => 'https://test.com',
+                                        'target' => '_blank'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $parser = new Parser();
+        $parser->replaceMark(\Nadar\ProseMirror\MarkType::link, function (Mark $mark, string $text) {
+            return '<a href="' . $mark->getAttr('href') . '" class="enum-link">' . $text . '</a>';
+        });
+        
+        $result = $parser->toHtml($json);
+        
+        $this->assertSame('<p><a href="https://test.com" class="enum-link">Link</a></p>', $result);
+    }
 }

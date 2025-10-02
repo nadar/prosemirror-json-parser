@@ -75,6 +75,16 @@ $html = (new \Nadar\ProseMirror\Parser())
     ->toHtml($json);
 ```
 
+You can also use the `MarkType` enum for type safety:
+
+```php
+$html = (new \Nadar\ProseMirror\Parser())
+    ->replaceMark(\Nadar\ProseMirror\MarkType::link, fn(\Nadar\ProseMirror\Mark $mark, string $text) => 
+        '<a href="' . $mark->getAttr('href') . '" class="custom-link" rel="noopener">' . $text . '</a>'
+    )
+    ->toHtml($json);
+```
+
 You can also add custom mark renderers for your own mark types:
 
 ```php
@@ -87,7 +97,7 @@ $html = (new \Nadar\ProseMirror\Parser())
 
 Default marks that can be customized include: `bold`, `italic`, `underline`, `strike`, and `link`.
 
-> The `addMark()` and `replaceMark()` methods work similarly to their node counterparts - use `replaceMark()` for customizing default marks and `addMark()` for adding new custom mark types.
+> The `addMark()` and `replaceMark()` methods work similarly to their node counterparts - use `replaceMark()` for customizing default marks and `addMark()` for adding new custom mark types. Both methods accept either a `MarkType` enum or a string for the type parameter.
 
 ---
 

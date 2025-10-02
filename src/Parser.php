@@ -81,11 +81,11 @@ class Parser
     public function getDefaultMarkRenderers(): array
     {
         return [
-            'bold' => static fn (Mark $mark, string $text) => '<strong>' . $text . '</strong>',
-            'italic' => static fn (Mark $mark, string $text) => '<em>' . $text . '</em>',
-            'underline' => static fn (Mark $mark, string $text) => '<u>' . $text . '</u>',
-            'strike' => static fn (Mark $mark, string $text) => '<s>' . $text . '</s>',
-            'link' => static fn (Mark $mark, string $text) => '<a href="' . $mark->getAttr('href') . '" target="' . $mark->getAttr('target') . '">' . $text . '</a>',
+            MarkType::bold->name => static fn (Mark $mark, string $text) => '<strong>' . $text . '</strong>',
+            MarkType::italic->name => static fn (Mark $mark, string $text) => '<em>' . $text . '</em>',
+            MarkType::underline->name => static fn (Mark $mark, string $text) => '<u>' . $text . '</u>',
+            MarkType::strike->name => static fn (Mark $mark, string $text) => '<s>' . $text . '</s>',
+            MarkType::link->name => static fn (Mark $mark, string $text) => '<a href="' . $mark->getAttr('href') . '" target="' . $mark->getAttr('target') . '">' . $text . '</a>',
         ];
     }
 
@@ -118,26 +118,28 @@ class Parser
     /**
     * Replaces a mark renderer with a custom renderer.
     *
-    * @param string $type The type of mark to replace the renderer for.
+    * @param MarkType|string $type The type of mark to replace the renderer for.
     * @param callable $renderer The custom renderer function.
     * @return $this
     */
-    public function replaceMark(string $type, callable $renderer): self
+    public function replaceMark(MarkType|string $type, callable $renderer): self
     {
-        $this->markRenderers[$type] = $renderer;
+        $key = $type instanceof MarkType ? $type->name : $type;
+        $this->markRenderers[$key] = $renderer;
         return $this;
     }
 
     /**
     * Adds a new mark renderer.
     *
-    * @param string $type The type of mark to add the renderer for.
+    * @param MarkType|string $type The type of mark to add the renderer for.
     * @param callable $renderer The renderer function to add.
     * @return $this
     */
-    public function addMark(string $type, callable $renderer): self
+    public function addMark(MarkType|string $type, callable $renderer): self
     {
-        $this->markRenderers[$type] = $renderer;
+        $key = $type instanceof MarkType ? $type->name : $type;
+        $this->markRenderers[$key] = $renderer;
         return $this;
     }
 
