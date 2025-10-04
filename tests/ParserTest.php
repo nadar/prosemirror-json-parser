@@ -114,4 +114,52 @@ class ParserTest extends TestCase
 
         $this->assertSame('<div>BarFoo: Hello World</div>', $result);
     }
+
+    public function testBackwardCompatibilityWithTypes()
+    {
+        $json = <<<EOT
+        {
+            "type": "doc",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Test paragraph"
+                        }
+                    ]
+                },
+                {
+                    "type": "image",
+                    "attrs": {
+                        "src": "test.jpg",
+                        "alt": "Test",
+                        "title": "Test Title"
+                    }
+                }
+            ]
+        }
+        EOT;
+
+        // Test with deprecated Types enum
+        $parserWithTypes = new Parser();
+        $parserWithTypes->replaceNode(\Nadar\ProseMirror\Types::paragraph, function (Node $node) {
+            return '<p class="types-class">' . $node->renderContent() . '</p>';
+        });
+        $resultTypes = $parserWithTypes->toHtml(json_decode($json, true));
+
+        // Test with new NodeType enum
+        $parserWithNodeType = new Parser();
+        $parserWithNodeType->replaceNode(NodeType::paragraph, function (Node $node) {
+            return '<p class="nodetype-class">' . $node->renderContent() . '</p>';
+        });
+        $resultNodeType = $parserWithNodeType->toHtml(json_decode($json, true));
+
+        // Both should work and produce expected output
+        $this->assertStringContainsString('<p class="types-class">Test paragraph</p>', $resultTypes);
+        $this->assertStringContainsString('<p class="nodetype-class">Test paragraph</p>', $resultNodeType);
+        $this->assertStringContainsString('<img src="test.jpg"', $resultTypes);
+        $this->assertStringContainsString('<img src="test.jpg"', $resultNodeType);
+    }
 }
