@@ -6,7 +6,7 @@ The ProseMirror JSON Parser (**prosemirror-json-parser**) is a versatile PHP lib
 
 [![PHPUnit Tests](https://github.com/nadar/prosemirror-json-parser/actions/workflows/phpunit.yml/badge.svg)](https://github.com/nadar/prosemirror-json-parser/actions/workflows/phpunit.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/79f6861128acda33438f/maintainability)](https://codeclimate.com/github/nadar/prosemirror-json-parser/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/79f6861128acda33438f/test_coverage)](https://codeclimate.com/github/nadar/prosemirror-json-parser/test_coverage)
+[![codecov](https://codecov.io/gh/nadar/prosemirror-json-parser/graph/badge.svg?token=HSSJH60XZV)](https://codecov.io/gh/nadar/prosemirror-json-parser)
 [![Latest Stable Version](https://poser.pugx.org/nadar/prosemirror-json-parser/v/stable)](https://packagist.org/packages/nadar/prosemirror-json-parser)
 [![Total Downloads](https://poser.pugx.org/nadar/prosemirror-json-parser/downloads)](https://packagist.org/packages/nadar/prosemirror-json-parser)
 [![License](https://poser.pugx.org/nadar/prosemirror-json-parser/license)](https://packagist.org/packages/nadar/prosemirror-json-parser)
