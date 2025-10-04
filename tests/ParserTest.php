@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Nadar\ProseMirror\Tests;
 
 use Nadar\ProseMirror\Node;
+use Nadar\ProseMirror\NodeType;
 use Nadar\ProseMirror\Parser;
-use Nadar\ProseMirror\Types;
 use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
@@ -104,7 +104,7 @@ class ParserTest extends TestCase
         EOT;
 
         $wysiwyg = new Parser();
-        $wysiwyg->replaceNode(Types::paragraph, function (Node $node) {
+        $wysiwyg->replaceNode(NodeType::paragraph, function (Node $node) {
             return '<p>Custom Paragraph</p>';
         });
 
@@ -113,5 +113,57 @@ class ParserTest extends TestCase
         $result = $wysiwyg->toHtml(json_decode($json, true));
 
         $this->assertSame('<div>BarFoo: Hello World</div>', $result);
+    }
+
+    public function testBackwardCompatibilityWithTypes()
+    {
+        $json = <<<EOT
+        {
+            "type": "doc",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Test paragraph"
+                        }
+                    ]
+                },
+                {
+                    "type": "image",
+                    "attrs": {
+                        "src": "test.jpg",
+                        "alt": "Test",
+                        "title": "Test Title"
+                    }
+                }
+            ]
+        }
+        EOT;
+
+        // Test that Types constants are actually NodeType instances
+        $this->assertSame(NodeType::paragraph, \Nadar\ProseMirror\Types::paragraph);
+        $this->assertInstanceOf(NodeType::class, \Nadar\ProseMirror\Types::paragraph);
+
+        // Test with deprecated Types class constants
+        $parserWithTypes = new Parser();
+        $parserWithTypes->replaceNode(\Nadar\ProseMirror\Types::paragraph, function (Node $node) {
+            return '<p class="types-class">' . $node->renderContent() . '</p>';
+        });
+        $resultTypes = $parserWithTypes->toHtml(json_decode($json, true));
+
+        // Test with new NodeType enum
+        $parserWithNodeType = new Parser();
+        $parserWithNodeType->replaceNode(NodeType::paragraph, function (Node $node) {
+            return '<p class="nodetype-class">' . $node->renderContent() . '</p>';
+        });
+        $resultNodeType = $parserWithNodeType->toHtml(json_decode($json, true));
+
+        // Both should work and produce expected output
+        $this->assertStringContainsString('<p class="types-class">Test paragraph</p>', $resultTypes);
+        $this->assertStringContainsString('<p class="nodetype-class">Test paragraph</p>', $resultNodeType);
+        $this->assertStringContainsString('<img src="test.jpg"', $resultTypes);
+        $this->assertStringContainsString('<img src="test.jpg"', $resultNodeType);
     }
 }

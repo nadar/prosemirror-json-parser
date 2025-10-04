@@ -29,39 +29,39 @@ class Parser
     public function getDefaultNodeRenderers(): array
     {
         return [
-            Types::doc->name => static fn (Node $node) => $node->renderContent(),
+            NodeType::doc->name => static fn (Node $node) => $node->renderContent(),
 
-            Types::default->name => static fn (Node $node) => '<div>'.$node->getType() . ' does not exists. ' . $node->renderContent().'</div>',
+            NodeType::default->name => static fn (Node $node) => '<div>'.$node->getType() . ' does not exists. ' . $node->renderContent().'</div>',
 
-            Types::paragraph->name => static fn (Node $node) => '<p>' . $node->renderContent() . '</p>',
+            NodeType::paragraph->name => static fn (Node $node) => '<p>' . $node->renderContent() . '</p>',
 
-            Types::blockquote->name => static fn (Node $node) => '<blockquote>' . $node->renderContent() . '</blockquote>',
+            NodeType::blockquote->name => static fn (Node $node) => '<blockquote>' . $node->renderContent() . '</blockquote>',
 
-            Types::image->name => static fn (Node $node) => '<img src="' . $node->getAttr('src') . '" alt="' . $node->getAttr('alt') . '" title="' . $node->getAttr('title') . '" />',
+            NodeType::image->name => static fn (Node $node) => '<img src="' . $node->getAttr('src') . '" alt="' . $node->getAttr('alt') . '" title="' . $node->getAttr('title') . '" />',
 
-            Types::heading->name => static fn (Node $node) => '<h' . $node->getAttr('level') . '>' . $node->renderContent() . '</h' . $node->getAttr('level') . '>',
+            NodeType::heading->name => static fn (Node $node) => '<h' . $node->getAttr('level') . '>' . $node->renderContent() . '</h' . $node->getAttr('level') . '>',
 
-            Types::youtube->name => static fn (Node $node) => '<iframe width="560" height="315" src="' . $node->getAttr('src') . '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
+            NodeType::youtube->name => static fn (Node $node) => '<iframe width="560" height="315" src="' . $node->getAttr('src') . '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
 
-            Types::bulletList->name => static fn (Node $node) => '<ul>' . implode('', array_map(static fn ($child) => '<li>' . $node->renderChildNode($child) . '</li>', $node->getContent())) . '</ul>',
+            NodeType::bulletList->name => static fn (Node $node) => '<ul>' . implode('', array_map(static fn ($child) => '<li>' . $node->renderChildNode($child) . '</li>', $node->getContent())) . '</ul>',
 
-            Types::orderedList->name => static fn (Node $node) => '<ol>' . implode('', array_map(static fn ($child) => '<li>' . $node->renderChildNode($child) . '</li>', $node->getContent())) . '</ol>',
+            NodeType::orderedList->name => static fn (Node $node) => '<ol>' . implode('', array_map(static fn ($child) => '<li>' . $node->renderChildNode($child) . '</li>', $node->getContent())) . '</ol>',
 
-            Types::listItem->name => static fn (Node $node) => $node->renderContent(),
+            NodeType::listItem->name => static fn (Node $node) => $node->renderContent(),
 
-            Types::codeBlock->name => static fn (Node $node) => '<pre><code>' . $node->renderContent() . '</code></pre>',
+            NodeType::codeBlock->name => static fn (Node $node) => '<pre><code>' . $node->renderContent() . '</code></pre>',
 
-            Types::horizontalRule->name => static fn () => '<hr />',
+            NodeType::horizontalRule->name => static fn () => '<hr />',
 
-            Types::hardBreak->name => static fn () => '<br />',
+            NodeType::hardBreak->name => static fn () => '<br />',
 
-            Types::table->name => static fn (Node $node) => "<table>{$node->renderContent()}</table>",
+            NodeType::table->name => static fn (Node $node) => "<table>{$node->renderContent()}</table>",
 
-            Types::tableRow->name => static fn (Node $node) => "<tr>{$node->renderContent()}</tr>",
+            NodeType::tableRow->name => static fn (Node $node) => "<tr>{$node->renderContent()}</tr>",
 
-            Types::tableCell->name => static fn (Node $node) => "<td>{$node->renderContent()}</td>",
+            NodeType::tableCell->name => static fn (Node $node) => "<td>{$node->renderContent()}</td>",
 
-            Types::text->name => function (Node $node) {
+            NodeType::text->name => function (Node $node) {
                 $text = $node->getText();
                 foreach ($node->getMarks() as $mark) {
                     /** @var Mark $mark */
@@ -92,11 +92,11 @@ class Parser
     /**
     * Replaces a node renderer with a custom renderer.
     *
-    * @param Types $type The type of node to replace the renderer for.
+    * @param NodeType $type The type of node to replace the renderer for.
     * @param callable $renderer The custom renderer function.
     * @return $this
     */
-    public function replaceNode(Types $type, callable $renderer): self
+    public function replaceNode(NodeType $type, callable $renderer): self
     {
         $this->nodeRenderers[$type->name] = $renderer;
         return $this;

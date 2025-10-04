@@ -7,24 +7,25 @@ namespace Nadar\ProseMirror;
  *
  * @author Basil <git@nadar.io>
  * @since 1.0.0
+ * @deprecated Use NodeType instead. This class will be removed in a future version.
  */
-enum Types
+final class Types
 {
-    case doc; // Represents the document type.
-    case default; // Represents the default type.
-    case paragraph; // Represents a paragraph.
-    case blockquote; // Represents a blockquote.
-    case image; // Represents an image type.
-    case heading; // Represents a heading type.
-    case youtube; // Represents a YouTube embed type.
-    case bulletList; // Represents a bullet list type.
-    case orderedList; // Represents an ordered list type.
-    case listItem; // Represents a list item type.
-    case text; // Represents a text type.
-    case codeBlock;
-    case horizontalRule;
-    case tableRow;
-    case tableCell;
-    case table;
-    case hardBreak;
+    public const doc = NodeType::doc;
+    public const default = NodeType::default;
+    public const paragraph = NodeType::paragraph;
+    public const blockquote = NodeType::blockquote;
+    public const image = NodeType::image;
+    public const heading = NodeType::heading;
+    public const youtube = NodeType::youtube;
+    public const bulletList = NodeType::bulletList;
+    public const orderedList = NodeType::orderedList;
+    public const listItem = NodeType::listItem;
+    public const text = NodeType::text;
+    public const codeBlock = NodeType::codeBlock;
+    public const horizontalRule = NodeType::horizontalRule;
+    public const tableRow = NodeType::tableRow;
+    public const tableCell = NodeType::tableCell;
+    public const table = NodeType::table;
+    public const hardBreak = NodeType::hardBreak;
 }
