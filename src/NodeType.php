@@ -3,13 +3,12 @@
 namespace Nadar\ProseMirror;
 
 /**
- * Enumeration representing different types for ProseMirror.
+ * Enumeration representing different node types for ProseMirror.
  *
  * @author Basil <git@nadar.io>
  * @since 1.0.0
- * @deprecated Use NodeType instead. This enum will be removed in a future version.
  */
-enum Types
+enum NodeType
 {
     case doc; // Represents the document type.
     case default; // Represents the default type.

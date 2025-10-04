@@ -45,11 +45,11 @@ For example, to adjust the rendering of the image node, you can include your own
 
 ```php
 $html = (new \Nadar\ProseMirror\Parser())
-    ->replaceNode(\Nadar\ProseMirror\Types::image, fn(\Nadar\ProseMirror\Node $node) => '<img src="' . $node->getAttr('src') . '" class="this-is-my-class" />')
+    ->replaceNode(\Nadar\ProseMirror\NodeType::image, fn(\Nadar\ProseMirror\Node $node) => '<img src="' . $node->getAttr('src') . '" class="this-is-my-class" />')
     ->toHtml($json);
 ```
 
-> To see all default nodes declared, refer to the `Types` class.
+> To see all default nodes declared, refer to the `NodeType` class.
 
 If you have a custom node with a specific name, you can add it to the parser using the `addNode()` method:
 
@@ -59,7 +59,7 @@ $html = (new \Nadar\ProseMirror\Parser())
     ->toHtml($json);
 ```
 
-> The `addNode()` and `replaceNode()` methods are almost identical internally, except that `replaceNode` should only be used when altering the output of default nodes. You can view all by-default declared nodes in the `Types` class.
+> The `addNode()` and `replaceNode()` methods are almost identical internally, except that `replaceNode` should only be used when altering the output of default nodes. You can view all by-default declared nodes in the `NodeType` class.
 
 ### Customizing Marks
 

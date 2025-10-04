@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Nadar\ProseMirror\Tests;
 
 use Nadar\ProseMirror\Node;
+use Nadar\ProseMirror\NodeType;
 use Nadar\ProseMirror\Parser;
-use Nadar\ProseMirror\Types;
 use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
@@ -104,7 +104,7 @@ class ParserTest extends TestCase
         EOT;
 
         $wysiwyg = new Parser();
-        $wysiwyg->replaceNode(Types::paragraph, function (Node $node) {
+        $wysiwyg->replaceNode(NodeType::paragraph, function (Node $node) {
             return '<p>Custom Paragraph</p>';
         });
 
