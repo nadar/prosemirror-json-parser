@@ -92,11 +92,11 @@ class Parser
     /**
     * Replaces a node renderer with a custom renderer.
     *
-    * @param NodeType|Types $type The type of node to replace the renderer for.
+    * @param NodeType $type The type of node to replace the renderer for.
     * @param callable $renderer The custom renderer function.
     * @return $this
     */
-    public function replaceNode(NodeType|Types $type, callable $renderer): self
+    public function replaceNode(NodeType $type, callable $renderer): self
     {
         $this->nodeRenderers[$type->name] = $renderer;
         return $this;

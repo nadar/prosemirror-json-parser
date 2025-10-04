@@ -142,7 +142,11 @@ class ParserTest extends TestCase
         }
         EOT;
 
-        // Test with deprecated Types enum
+        // Test that Types constants are actually NodeType instances
+        $this->assertSame(NodeType::paragraph, \Nadar\ProseMirror\Types::paragraph);
+        $this->assertInstanceOf(NodeType::class, \Nadar\ProseMirror\Types::paragraph);
+
+        // Test with deprecated Types class constants
         $parserWithTypes = new Parser();
         $parserWithTypes->replaceNode(\Nadar\ProseMirror\Types::paragraph, function (Node $node) {
             return '<p class="types-class">' . $node->renderContent() . '</p>';
