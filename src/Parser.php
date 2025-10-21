@@ -15,8 +15,8 @@ class Parser
     /** @var array An array containing mark renderers. */
     public array $markRenderers = [];
 
-    /** @var bool Whether to skip paragraph tags in list items. */
-    protected bool $skipParagraphsInListItems = false;
+    /** @var bool Whether to wrap list item content in paragraph tags. */
+    protected bool $wrapParagraphsInListItems = false;
 
     public function __construct()
     {
@@ -37,8 +37,8 @@ class Parser
             NodeType::default->name => static fn (Node $node) => '<div>'.$node->getType() . ' does not exists. ' . $node->renderContent().'</div>',
 
             NodeType::paragraph->name => function (Node $node) {
-                // Skip paragraph tags in list items if option is enabled
-                if ($this->skipParagraphsInListItems && $node->getParentType() === NodeType::listItem->name) {
+                // Don't wrap paragraphs in list items unless explicitly enabled
+                if (!$this->wrapParagraphsInListItems && $node->getParentType() === NodeType::listItem->name) {
                     return $node->renderContent();
                 }
                 return '<p>' . $node->renderContent() . '</p>';
@@ -153,25 +153,25 @@ class Parser
     }
 
     /**
-    * Sets whether to skip paragraph tags in list items.
+    * Sets whether to wrap list item content in paragraph tags.
     *
-    * @param bool $skip Whether to skip paragraph tags in list items.
+    * @param bool $wrap Whether to wrap list item content in paragraph tags.
     * @return $this
     */
-    public function setSkipParagraphsInListItems(bool $skip): self
+    public function setWrapParagraphsInListItems(bool $wrap): self
     {
-        $this->skipParagraphsInListItems = $skip;
+        $this->wrapParagraphsInListItems = $wrap;
         return $this;
     }
 
     /**
-    * Gets whether paragraph tags should be skipped in list items.
+    * Gets whether list item content should be wrapped in paragraph tags.
     *
-    * @return bool Whether paragraph tags should be skipped in list items.
+    * @return bool Whether list item content should be wrapped in paragraph tags.
     */
-    public function getSkipParagraphsInListItems(): bool
+    public function getWrapParagraphsInListItems(): bool
     {
-        return $this->skipParagraphsInListItems;
+        return $this->wrapParagraphsInListItems;
     }
 
     /**

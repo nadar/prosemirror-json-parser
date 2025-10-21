@@ -99,19 +99,19 @@ Default marks that can be customized include: `bold`, `italic`, `underline`, `st
 
 > The `addMark()` and `replaceMark()` methods work similarly to their node counterparts - use `replaceMark()` for customizing default marks and `addMark()` for adding new custom mark types. Both methods accept either a `MarkType` enum or a string for the type parameter.
 
-### Skip Paragraph Tags in List Items
+### List Item Paragraph Handling
 
-By default, ProseMirror/TipTap wraps list item content in paragraph tags, which results in HTML like `<ul><li><p>text</p></li></ul>`. For better styling control, you can skip these paragraph tags:
+By default, the parser produces clean HTML for list items without wrapping content in paragraph tags: `<ul><li>text</li></ul>`.
+
+If you need the previous behavior where list items were wrapped in paragraph tags (`<ul><li><p>text</p></li></ul>`), you can enable it:
 
 ```php
 $html = (new \Nadar\ProseMirror\Parser())
-    ->setSkipParagraphsInListItems(true)
+    ->setWrapParagraphsInListItems(true)
     ->toHtml($json);
 ```
 
-This will produce cleaner HTML: `<ul><li>text</li></ul>` instead of `<ul><li><p>text</p></li></ul>`.
-
-> Note: Paragraphs outside of list items will still be rendered with `<p>` tags. This option only affects paragraphs that are direct children of list items.
+> Note: Paragraphs outside of list items will always be rendered with `<p>` tags. This option only affects paragraphs that are direct children of list items.
 
 ---
 

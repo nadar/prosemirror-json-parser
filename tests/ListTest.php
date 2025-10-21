@@ -67,10 +67,11 @@ class ListTest extends TestCase
         $parser = new Parser();
         $html = $parser->toHtml($json);
         
-        $this->assertSame('<ul><li><p>huhu</p></li><li><p>hahaha</p></li><li><p>hihi</p></li></ul>', $html);
+        // Default behavior: no paragraph wrapping in list items
+        $this->assertSame('<ul><li>huhu</li><li>hahaha</li><li>hihi</li></ul>', $html);
     }
 
-    public function testBulletListWithSkipParagraphsOption()
+    public function testBulletListWithWrapParagraphsOption()
     {
         $json = [
             "type" => "doc",
@@ -126,13 +127,14 @@ class ListTest extends TestCase
         ];
 
         $parser = new Parser();
-        $parser->setSkipParagraphsInListItems(true);
+        $parser->setWrapParagraphsInListItems(true);
         $html = $parser->toHtml($json);
         
-        $this->assertSame('<ul><li>huhu</li><li>hahaha</li><li>hihi</li></ul>', $html);
+        // With wrapping enabled: paragraphs are wrapped in <p> tags
+        $this->assertSame('<ul><li><p>huhu</p></li><li><p>hahaha</p></li><li><p>hihi</p></li></ul>', $html);
     }
 
-    public function testOrderedListWithSkipParagraphsOption()
+    public function testOrderedListWithDefaultBehavior()
     {
         $json = [
             "type" => "doc",
@@ -174,9 +176,9 @@ class ListTest extends TestCase
         ];
 
         $parser = new Parser();
-        $parser->setSkipParagraphsInListItems(true);
         $html = $parser->toHtml($json);
         
+        // Default behavior: no paragraph wrapping in list items
         $this->assertSame('<ol><li>First item</li><li>Second item</li></ol>', $html);
     }
 
@@ -226,13 +228,13 @@ class ListTest extends TestCase
         ];
 
         $parser = new Parser();
-        $parser->setSkipParagraphsInListItems(true);
         $html = $parser->toHtml($json);
         
+        // Paragraphs outside lists always have <p> tags
         $this->assertSame('<p>Normal paragraph</p><ul><li>List item</li></ul><p>Another paragraph</p>', $html);
     }
 
-    public function testNestedListsWithSkipParagraphsOption()
+    public function testNestedListsWithDefaultBehavior()
     {
         $json = [
             "type" => "doc",
@@ -279,9 +281,9 @@ class ListTest extends TestCase
         ];
 
         $parser = new Parser();
-        $parser->setSkipParagraphsInListItems(true);
         $html = $parser->toHtml($json);
         
+        // Default behavior: no paragraph wrapping in list items
         $this->assertSame('<ul><li>Parent item<ul><li>Nested item</li></ul></li></ul>', $html);
     }
 
@@ -322,23 +324,23 @@ class ListTest extends TestCase
         ];
 
         $parser = new Parser();
-        $parser->setSkipParagraphsInListItems(true);
         $html = $parser->toHtml($json);
         
-        // When skipParagraphsInListItems is true, paragraphs are rendered without <p> tags
+        // Default behavior: paragraphs in list items are rendered without <p> tags
         $this->assertSame('<ul><li>First paragraphSecond paragraph</li></ul>', $html);
     }
 
-    public function testGetterForSkipParagraphsInListItems()
+    public function testGetterSetterForWrapParagraphsInListItems()
     {
         $parser = new Parser();
         
-        $this->assertFalse($parser->getSkipParagraphsInListItems());
+        // Default is false (no wrapping)
+        $this->assertFalse($parser->getWrapParagraphsInListItems());
         
-        $parser->setSkipParagraphsInListItems(true);
-        $this->assertTrue($parser->getSkipParagraphsInListItems());
+        $parser->setWrapParagraphsInListItems(true);
+        $this->assertTrue($parser->getWrapParagraphsInListItems());
         
-        $parser->setSkipParagraphsInListItems(false);
-        $this->assertFalse($parser->getSkipParagraphsInListItems());
+        $parser->setWrapParagraphsInListItems(false);
+        $this->assertFalse($parser->getWrapParagraphsInListItems());
     }
 }
