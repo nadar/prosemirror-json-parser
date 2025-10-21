@@ -15,6 +15,9 @@ class Parser
     /** @var array An array containing mark renderers. */
     public array $markRenderers = [];
 
+    /** @var bool Whether to skip paragraph tags in list items. */
+    protected bool $skipParagraphsInListItems = false;
+
     public function __construct()
     {
         $this->nodeRenderers = $this->getDefaultNodeRenderers();
@@ -33,7 +36,13 @@ class Parser
 
             NodeType::default->name => static fn (Node $node) => '<div>'.$node->getType() . ' does not exists. ' . $node->renderContent().'</div>',
 
-            NodeType::paragraph->name => static fn (Node $node) => '<p>' . $node->renderContent() . '</p>',
+            NodeType::paragraph->name => function (Node $node) {
+                // Skip paragraph tags in list items if option is enabled
+                if ($this->skipParagraphsInListItems && $node->getParentType() === NodeType::listItem->name) {
+                    return $node->renderContent();
+                }
+                return '<p>' . $node->renderContent() . '</p>';
+            },
 
             NodeType::blockquote->name => static fn (Node $node) => '<blockquote>' . $node->renderContent() . '</blockquote>',
 
@@ -141,6 +150,28 @@ class Parser
         $key = $type instanceof MarkType ? $type->name : $type;
         $this->markRenderers[$key] = $renderer;
         return $this;
+    }
+
+    /**
+    * Sets whether to skip paragraph tags in list items.
+    *
+    * @param bool $skip Whether to skip paragraph tags in list items.
+    * @return $this
+    */
+    public function setSkipParagraphsInListItems(bool $skip): self
+    {
+        $this->skipParagraphsInListItems = $skip;
+        return $this;
+    }
+
+    /**
+    * Gets whether paragraph tags should be skipped in list items.
+    *
+    * @return bool Whether paragraph tags should be skipped in list items.
+    */
+    public function getSkipParagraphsInListItems(): bool
+    {
+        return $this->skipParagraphsInListItems;
     }
 
     /**
