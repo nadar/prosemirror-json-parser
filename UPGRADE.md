@@ -1,28 +1,28 @@
-# Changelog
+# Upgrade Guide
 
-All notable changes to this project will be documented in this file.
+## Upgrading from 1.x to 2.x
 
-## [Unreleased]
+### BREAKING CHANGE: List Item Paragraph Handling
 
-### Changed - BREAKING CHANGE
+The default behavior for rendering list items has changed to produce cleaner HTML without paragraph tags.
 
-**List Item Paragraph Handling**: The default behavior for rendering list items has changed to produce cleaner HTML without paragraph tags.
+#### What Changed in 2.x
 
-#### What Changed
-
-Previously, list items were rendered with paragraph tags:
+**Version 1.x behavior:**
+List items were rendered with paragraph tags:
 ```html
 <ul><li><p>text</p></li></ul>
 ```
 
-Now, list items are rendered without paragraph tags by default:
+**Version 2.x behavior (new default):**
+List items are rendered without paragraph tags:
 ```html
 <ul><li>text</li></ul>
 ```
 
-#### Migration Guide
+#### How to Upgrade
 
-If you need to restore the previous behavior (paragraph tags in list items), use the `setWrapParagraphsInListItems(true)` method:
+If you need to restore the version 1.x behavior (paragraph tags in list items), use the `setWrapParagraphsInListItems(true)` method:
 
 ```php
 $parser = new \Nadar\ProseMirror\Parser();
