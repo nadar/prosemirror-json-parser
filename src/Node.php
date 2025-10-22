@@ -14,7 +14,7 @@ use ArrayIterator;
  */
 class Node
 {
-    public function __construct(protected Parser $parser, protected array $node)
+    public function __construct(protected Parser $parser, protected array $node, protected ?string $parentType = null)
     {
 
     }
@@ -27,6 +27,16 @@ class Node
     public function getType(): string
     {
         return $this->node['type'] ?? '';
+    }
+
+    /**
+     * Returns the parent type of the node.
+     *
+     * @return string|null The parent type of the node, or null if no parent.
+     */
+    public function getParentType(): ?string
+    {
+        return $this->parentType;
     }
 
     /**
@@ -117,6 +127,7 @@ class Node
      */
     public function renderChildNode(array $json): string
     {
-        return $this->parser->renderNode($json);
+        $childNode = new Node($this->parser, $json, $this->getType());
+        return $childNode->render();
     }
 }

@@ -15,6 +15,9 @@ class Parser
     /** @var array An array containing mark renderers. */
     public array $markRenderers = [];
 
+    /** @var bool Whether to wrap list item content in paragraph tags. */
+    protected bool $wrapParagraphsInListItems = false;
+
     public function __construct()
     {
         $this->nodeRenderers = $this->getDefaultNodeRenderers();
@@ -33,7 +36,13 @@ class Parser
 
             NodeType::default->name => static fn (Node $node) => '<div>'.$node->getType() . ' does not exists. ' . $node->renderContent().'</div>',
 
-            NodeType::paragraph->name => static fn (Node $node) => '<p>' . $node->renderContent() . '</p>',
+            NodeType::paragraph->name => function (Node $node) {
+                // Don't wrap paragraphs in list items unless explicitly enabled
+                if (!$this->wrapParagraphsInListItems && $node->getParentType() === NodeType::listItem->name) {
+                    return $node->renderContent();
+                }
+                return '<p>' . $node->renderContent() . '</p>';
+            },
 
             NodeType::blockquote->name => static fn (Node $node) => '<blockquote>' . $node->renderContent() . '</blockquote>',
 
@@ -141,6 +150,28 @@ class Parser
         $key = $type instanceof MarkType ? $type->name : $type;
         $this->markRenderers[$key] = $renderer;
         return $this;
+    }
+
+    /**
+    * Sets whether to wrap list item content in paragraph tags.
+    *
+    * @param bool $wrap Whether to wrap list item content in paragraph tags.
+    * @return $this
+    */
+    public function setWrapParagraphsInListItems(bool $wrap): self
+    {
+        $this->wrapParagraphsInListItems = $wrap;
+        return $this;
+    }
+
+    /**
+    * Gets whether list item content should be wrapped in paragraph tags.
+    *
+    * @return bool Whether list item content should be wrapped in paragraph tags.
+    */
+    public function getWrapParagraphsInListItems(): bool
+    {
+        return $this->wrapParagraphsInListItems;
     }
 
     /**
