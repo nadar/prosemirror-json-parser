@@ -18,8 +18,12 @@ class Parser
     /** @var bool Whether to wrap list item content in paragraph tags. */
     protected bool $wrapParagraphsInListItems = false;
 
-    public function __construct()
+    /** @var bool Whether to render a debug message for unknown node types. Disable in production. */
+    protected bool $renderUnknownNodes = true;
+
+    public function __construct(bool $renderUnknownNodes = true)
     {
+        $this->renderUnknownNodes = $renderUnknownNodes;
         $this->nodeRenderers = $this->getDefaultNodeRenderers();
         $this->markRenderers = $this->getDefaultMarkRenderers();
     }
@@ -34,7 +38,9 @@ class Parser
         return [
             NodeType::doc->name => static fn (Node $node) => $node->renderContent(),
 
-            NodeType::default->name => static fn (Node $node) => '<div>'.$node->getType() . ' does not exists. ' . $node->renderContent().'</div>',
+            NodeType::default->name => $this->renderUnknownNodes
+                ? static fn (Node $node) => '<div>'.$node->getType() . ' does not exists. ' . $node->renderContent().'</div>'
+                : static fn (Node $node) => '',
 
             NodeType::paragraph->name => function (Node $node) {
                 // Don't wrap paragraphs in list items unless explicitly enabled
