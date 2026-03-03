@@ -84,6 +84,46 @@ class ParserTest extends TestCase
         $this->assertSame("<script>alert('xss');</script>", $xssResult);
     }
 
+    public function testRenderUnknownNodesDisabled()
+    {
+        $json = <<<EOT
+        {
+            "type": "doc",
+            "content": [
+                {
+                    "type": "unknownNodeType",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Hello World"
+                        }
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Test"
+                        }
+                    ]
+                }
+            ]
+        }
+        EOT;
+
+        // Default (renderUnknownNodes = true) should render debug div
+        $parserDebug = new Parser();
+        $resultDebug = $parserDebug->toHtml(json_decode($json, true));
+        $this->assertStringContainsString('<div>unknownNodeType does not exists.', $resultDebug);
+
+        // With renderUnknownNodes = false, unknown nodes should render as empty string
+        $parserProduction = new Parser(false);
+        $resultProduction = $parserProduction->toHtml(json_decode($json, true));
+        $this->assertStringNotContainsString('does not exists', $resultProduction);
+        $this->assertSame('<p>Test</p>', $resultProduction);
+    }
+
     public function testCustomNodeRenderer()
     {
         $json = <<<EOT
