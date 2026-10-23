@@ -76,10 +76,15 @@ class Box implements \Nadar\ProseMirror\NodeInterface
     {
         return new static($node->getAttr('title'), $node->renderContent());
     }
+
+    public function render(): string
+    {
+        return '<div><h3>' . $this->title . '</h3>' . $this->content . '</div>';
+    }
 }
 
 $html = (new \Nadar\ProseMirror\Parser())
-    ->addNode('box', fn(Box $box) => '<div><h3>' . $box->title . '</h3>' . $box->content . '</div>')
+    ->addNode('box', fn(Box $box) => $box->render())
     ->toHtml($json);
 ```
 
