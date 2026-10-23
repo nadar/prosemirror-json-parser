@@ -1,5 +1,9 @@
 # Upgrade Guide
 
+## PHP 8.2 required
+
+PHP 8.1 has reached end of life and is no longer supported. The minimum required PHP version is now 8.2. The library is tested against PHP 8.2, 8.3, 8.4 and 8.5.
+
 ## Upgrading from 1.x to 2.x
 
 ### BREAKING CHANGE: List Item Paragraph Handling
