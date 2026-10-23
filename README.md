@@ -61,6 +61,30 @@ $html = (new \Nadar\ProseMirror\Parser())
 
 > The `addNode()` and `replaceNode()` methods are almost identical internally, except that `replaceNode` should only be used when altering the output of default nodes. You can view all by-default declared nodes in the `NodeType` class.
 
+### Typed Nodes
+
+A renderer can take a class of your own instead of the `Node`. Implement `NodeInterface`, whose `fromNode()` builds your class from the node, and type the renderer's parameter with it. The parser then calls the renderer with that class:
+
+```php
+class Box implements \Nadar\ProseMirror\NodeInterface
+{
+    public function __construct(public readonly string $title, public readonly string $content)
+    {
+    }
+
+    public static function fromNode(\Nadar\ProseMirror\Node $node): static
+    {
+        return new static($node->getAttr('title'), $node->renderContent());
+    }
+}
+
+$html = (new \Nadar\ProseMirror\Parser())
+    ->addNode('box', fn(Box $box) => '<div><h3>' . $box->title . '</h3>' . $box->content . '</div>')
+    ->toHtml($json);
+```
+
+This works for `addNode()` and `replaceNode()` alike. Renderers that take a `Node`, or whose parameter is not typed, get the `Node` as before.
+
 ### Customizing Marks
 
 In addition to customizing nodes, you can also customize how marks (like bold, italic, link, etc.) are rendered without replacing the entire text node renderer. This is particularly useful when you want to customize the output of specific marks.

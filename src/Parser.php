@@ -107,18 +107,24 @@ class Parser
     /**
     * Replaces a node renderer with a custom renderer.
     *
+    * When the renderer's first parameter is typed with a {@see NodeInterface} class, it is called
+    * with the instance that class builds from the node instead of the node itself.
+    *
     * @param NodeType $type The type of node to replace the renderer for.
     * @param callable $renderer The custom renderer function.
     * @return $this
     */
     public function replaceNode(NodeType $type, callable $renderer): self
     {
-        $this->nodeRenderers[$type->name] = $renderer;
+        $this->nodeRenderers[$type->name] = $this->resolveNodeRenderer($renderer);
         return $this;
     }
 
     /**
     * Adds a new node renderer.
+    *
+    * When the renderer's first parameter is typed with a {@see NodeInterface} class, it is called
+    * with the instance that class builds from the node instead of the node itself.
     *
     * @param string $type The type of node to add the renderer for.
     * @param callable $renderer The renderer function to add.
@@ -126,8 +132,34 @@ class Parser
     */
     public function addNode(string $type, callable $renderer): self
     {
-        $this->nodeRenderers[$type] = $renderer;
+        $this->nodeRenderers[$type] = $this->resolveNodeRenderer($renderer);
         return $this;
+    }
+
+    /**
+    * Wraps a renderer that takes a {@see NodeInterface} class, so it can be called with a node.
+    *
+    * A renderer taking a {@see Node}, or with an untyped parameter, is returned unchanged.
+    *
+    * @param callable $renderer The renderer function.
+    * @return callable A renderer function that takes a {@see Node}.
+    */
+    protected function resolveNodeRenderer(callable $renderer): callable
+    {
+        $parameters = (new \ReflectionFunction(\Closure::fromCallable($renderer)))->getParameters();
+        $type = isset($parameters[0]) ? $parameters[0]->getType() : null;
+
+        if (!$type instanceof \ReflectionNamedType || $type->isBuiltin()) {
+            return $renderer;
+        }
+
+        $class = $type->getName();
+
+        if (!is_subclass_of($class, NodeInterface::class)) {
+            return $renderer;
+        }
+
+        return static fn (Node $node) => $renderer($class::fromNode($node));
     }
 
     /**
